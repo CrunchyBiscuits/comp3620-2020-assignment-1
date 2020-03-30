@@ -1,15 +1,16 @@
 """
     Enter your details below:
 
-    Name:
-    Student ID:
-    Email:
+    Name: Zheyuan Zhang
+    Student ID: u6870923
+    Email: zheyuan.zhang@anu.edu.au
 """
 
 from typing import List
 
 from game_engine.util import raise_not_defined
 from search_problems import SearchProblem
+from frontiers import Queue
 
 
 def solve(problem: SearchProblem) -> List[str]:
@@ -21,5 +22,30 @@ def solve(problem: SearchProblem) -> List[str]:
     WEST of the class Directions.
     """
 
-    raise_not_defined()  # Remove this line when you have implemented BrFS
     # *** YOUR CODE HERE ***
+    s0 = problem.get_initial_state()
+    q = Queue()
+    q.push(s0)
+    visited = [s0]
+    answer = []
+    flag = True
+    while flag:
+        travel = q.pop()
+        for successor, action, cost in problem.get_successors(travel):
+            if problem.goal_test(successor):
+                visited.append(successor)
+                flag = False
+                break
+            if successor not in visited:
+                visited.append(successor)
+                q.push(successor)
+
+    node = visited[-1]
+    for path in reversed(visited):
+        for successor, action, cost in problem.get_successors(path):
+            if successor == node:
+                node = path
+                answer.append(action)
+    answer.reverse()
+
+    return answer
