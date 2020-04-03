@@ -26,7 +26,7 @@ def solve(problem: SearchProblem) -> List[str]:
     q = Queue()
     q.push(s0)
     visited = [s0]
-    answer = {s0: ""}
+    answer = []
     # add a flag here to optimize the expand if we reach the goal, then do not need to expand anymore.
     flag = True
     # bfs search, use visited list to store the place we travel
@@ -41,5 +41,13 @@ def solve(problem: SearchProblem) -> List[str]:
                 visited.append(successor)
                 q.push(successor)
 
+    # get the action list, check the parent of each state to get the path
+    node = visited[-1]
+    for path in reversed(visited):
+        for successor, action, cost in problem.get_successors(path):
+            if successor == node:
+                node = path
+                answer.append(action)
+    answer.reverse()
 
     return answer
