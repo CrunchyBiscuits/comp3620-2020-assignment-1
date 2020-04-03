@@ -1,14 +1,13 @@
 """
     Enter your details below:
 
-    Name:
-    Student ID:
-    Email:
+    Name: Zheyuan Zhang
+    Student ID: u6870923
+    Email:zheyuan.zhang@anu.edu.au
 """
 
 from typing import Callable, List
-
-from game_engine.util import raise_not_defined
+from frontiers import PriorityQueue
 from search_problems import SearchProblem
 
 
@@ -21,5 +20,26 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
     WEST of the class Directions.
     """
 
-    raise_not_defined()  # Remove this line when your solution is implemented
     # *** YOUR CODE HERE ***
+    s0 = problem.get_initial_state()
+    frontier = PriorityQueue()
+    frontier.push(s0, 0.0)
+    gn = {s0: 0.0}
+    visited = []
+    answer = {s0: ""}
+    goal = s0
+    flag = True
+    while flag:
+        travel = frontier.pop()
+        for successor, action, cost in problem.get_successors(travel):
+            if problem.goal_test(successor):
+                goal = successor
+                flag = False
+            if successor not in visited:
+                visited.append(successor)
+                fn = gn[travel] + heuristic(successor, problem)
+                frontier.push(successor, fn)
+                answer[successor] = answer[travel]+" "+str(action)
+                gn[successor] = fn
+
+    return answer[goal].split()
