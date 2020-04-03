@@ -8,7 +8,6 @@
 
 from typing import List
 
-from game_engine.util import raise_not_defined
 from search_problems import SearchProblem
 from frontiers import Queue
 
