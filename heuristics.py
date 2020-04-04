@@ -79,7 +79,11 @@ def every_bird_heuristic(state: State,
     heuristic_value = 0
 
     """ *** YOUR CODE HERE *** """
-
+    min_distance = 100
+    for yellow_bird in yellow_birds:
+        if problem.maze_distance(position, yellow_bird) < min_distance:
+            min_distance = problem.maze_distance(position, yellow_bird)
+            heuristic_value = min_distance
     return heuristic_value
 
 

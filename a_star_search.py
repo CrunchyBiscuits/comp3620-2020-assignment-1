@@ -31,10 +31,10 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
     flag = True
     while flag:
         travel = frontier.pop()
+        if problem.goal_test(travel):
+            goal = travel
+            flag = False
         for successor, action, cost in problem.get_successors(travel):
-            if problem.goal_test(successor):
-                goal = successor
-                flag = False
             if successor not in visited:
                 visited.append(successor)
                 fn = gn[travel] + heuristic(successor, problem)
