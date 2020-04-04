@@ -66,7 +66,7 @@ def bird_counting_heuristic(state: State,
     heuristic_value = 0
 
     """ *** YOUR CODE HERE *** """
-
+    heuristic_value = len(yellow_birds)
     return heuristic_value
 
 
