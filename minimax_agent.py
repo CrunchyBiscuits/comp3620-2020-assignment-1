@@ -55,10 +55,10 @@ class MinimaxAgent(Agent):
         # *** YOUR CODE GOES HERE ***
         if problem.terminal_test(state) or current_depth == self.depth:
             return problem.utility(state), Directions.STOP
-        max_utility = -float('inf')
+        max_utility = float('-inf')
         max_action = None
         for next_state, action, _ in problem.get_successors(state):
-            temp_utility = self.minimize(problem, state, current_depth+1, alpha, beta)
+            temp_utility = self.minimize(problem, next_state, current_depth+1, alpha, beta)
             if max_utility < temp_utility:
                 max_utility = temp_utility
                 max_action = action
@@ -77,7 +77,7 @@ class MinimaxAgent(Agent):
             return problem.utility(state)
         min_utility = float('inf')
         for next_state, action, _ in problem.get_successors(state):
-            temp_utility, temp_action = self.maximize(problem, state, current_depth+1, alpha, beta)
+            temp_utility, temp_action = self.maximize(problem, next_state, current_depth+1, alpha, beta)
             if min_utility > temp_utility:
                 min_utility = temp_utility
         return min_utility
