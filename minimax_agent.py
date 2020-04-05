@@ -7,9 +7,9 @@
 """
     Enter your details below:
 
-    Name:
-    Student ID:
-    Email:
+    Name: Zheyuan Zhang
+    Student ID:u6870923
+    Email:zheyuan.zhang@anu.edu.au
 """
 
 from typing import Tuple
@@ -52,8 +52,18 @@ class MinimaxAgent(Agent):
             implementing minimax without alpha-beta pruning.
         """
 
-        raise_not_defined()  # Remove this line once you finished your implementation
         # *** YOUR CODE GOES HERE ***
+        if problem.terminal_test(state) or current_depth == self.depth:
+            return problem.utility(state), Directions.STOP
+        max_utility = -float('inf')
+        max_action = None
+        for next_state, action, _ in problem.get_successors(state):
+            temp_utility = self.minimize(problem, state, current_depth+1, alpha, beta)
+            if max_utility < temp_utility:
+                max_utility = temp_utility
+                max_action = action
+
+        return max_utility, max_action
 
     def minimize(self, problem: AdversarialSearchProblem, state: State,
                  current_depth: int, alpha=float('-inf'), beta=float('inf')) -> float:
@@ -62,8 +72,15 @@ class MinimaxAgent(Agent):
             implementing minimax without alpha-beta pruning.
         """
 
-        raise_not_defined()  # Remove this line once you finished your implementation
         # *** YOUR CODE GOES HERE ***
+        if problem.terminal_test(state) or current_depth == self.depth:
+            return problem.utility(state)
+        min_utility = float('inf')
+        for next_state, action, _ in problem.get_successors(state):
+            temp_utility, temp_action = self.maximize(problem, state, current_depth+1, alpha, beta)
+            if min_utility > temp_utility:
+                min_utility = temp_utility
+        return min_utility
 
     def get_action(self, game_state):
         """ This method is called by the system to solicit an action from

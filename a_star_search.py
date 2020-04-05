@@ -28,12 +28,10 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
     visited = []
     answer = {s0: ""}
     goal = s0
-    flag = True
-    while flag:
+    while not frontier.is_empty():
         travel = frontier.pop()
         if problem.goal_test(travel):
             goal = travel
-            flag = False
         for successor, action, cost in problem.get_successors(travel):
             if successor not in visited:
                 visited.append(successor)
