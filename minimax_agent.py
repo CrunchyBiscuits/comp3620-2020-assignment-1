@@ -62,6 +62,10 @@ class MinimaxAgent(Agent):
             if max_utility < temp_utility:
                 max_utility = temp_utility
                 max_action = action
+                alpha = max_utility
+
+            if beta <= alpha:
+                break
         return max_utility, max_action
 
     def minimize(self, problem: AdversarialSearchProblem, state: State,
@@ -76,7 +80,11 @@ class MinimaxAgent(Agent):
             return problem.utility(state)
         min_utility = float('inf')
         for next_state, action, _ in problem.get_successors(state):
-            min_utility = min(min_utility,self.maximize(problem, next_state, current_depth+1, alpha, beta)[0])
+            min_utility = min(min_utility, self.maximize(problem, next_state, current_depth+1, alpha, beta)[0])
+            beta = min_utility
+
+            if beta <= alpha:
+                break
         return min_utility
 
     def get_action(self, game_state):
