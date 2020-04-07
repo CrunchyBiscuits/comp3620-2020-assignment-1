@@ -42,6 +42,19 @@ class MinimaxAgent(Agent):
         player, red_pos, black_pos, yellow_birds, score, yb_score = state
 
         # *** YOUR CODE GOES HERE ***
+        # calculate the maze distance of red_pos and black_pos
+        red_black_distance = problem.maze_distance(red_pos, black_pos)
+        if red_black_distance == 0:
+            score -= yb_score
+
+        # Give weight to each maze distance of red and black position
+        # The reason why give 0.5 to black_pos is that for reducing the punishment for the same yellow bird
+        # I wish the red bird become more positive to struggle for the same yellow bird
+        for yellow_bird in yellow_birds:
+            # reward
+            score += yb_score * (1 / problem.maze_distance(red_pos, yellow_bird))
+            # punishment
+            score -= yb_score * (0.5 / problem.maze_distance(black_pos, yellow_bird))
 
         return score
 
@@ -54,7 +67,7 @@ class MinimaxAgent(Agent):
 
         # *** YOUR CODE GOES HERE ***
         if problem.terminal_test(state) or current_depth == self.depth:
-            return problem.utility(state), Directions.STOP
+            return self.evaluation(problem, state), Directions.STOP
         max_utility = float('-inf')
         max_action = None
         for next_state, action, _ in problem.get_successors(state):
@@ -77,7 +90,7 @@ class MinimaxAgent(Agent):
 
         # *** YOUR CODE GOES HERE ***
         if problem.terminal_test(state) or current_depth == self.depth:
-            return problem.utility(state)
+            return self.evaluation(problem, state)
         min_utility = float('inf')
         for next_state, action, _ in problem.get_successors(state):
             min_utility = min(min_utility, self.maximize(problem, next_state, current_depth+1, alpha, beta)[0])
