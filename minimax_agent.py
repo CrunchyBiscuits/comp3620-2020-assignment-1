@@ -78,7 +78,7 @@ class MinimaxAgent(Agent):
         max_utility = float('-inf')
         max_action = None
         for next_state, action, _ in problem.get_successors(state):
-            temp_utility = self.minimize(problem, next_state, current_depth+1, alpha, beta)
+            temp_utility = self.minimize(problem, next_state, current_depth + 1, alpha, beta)
             if max_utility < temp_utility:
                 max_utility = temp_utility
                 max_action = action
@@ -100,7 +100,7 @@ class MinimaxAgent(Agent):
             return self.evaluation(problem, state)
         min_utility = float('inf')
         for next_state, action, _ in problem.get_successors(state):
-            min_utility = min(min_utility, self.maximize(problem, next_state, current_depth+1, alpha, beta)[0])
+            min_utility = min(min_utility, self.maximize(problem, next_state, current_depth + 1, alpha, beta)[0])
             beta = min_utility
 
             if beta <= alpha:

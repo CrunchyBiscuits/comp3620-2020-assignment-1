@@ -50,8 +50,8 @@ def recursive_dls(problem: SearchProblem, frontier, visited, bound, answer):
     else:
         for successor, action, cost in problem.get_successors(state):
             if successor not in visited.keys() or visited[successor] > depth:
-                frontier.push((successor, depth+1))
-                answer[successor] = answer[state]+" "+str(action)
+                frontier.push((successor, depth + 1))
+                answer[successor] = answer[state] + " " + str(action)
                 visited[successor] = depth + 1
             result = recursive_dls(problem, frontier, visited, bound, answer)
             if result and type(result) == bool:
@@ -60,7 +60,3 @@ def recursive_dls(problem: SearchProblem, frontier, visited, bound, answer):
                 return result
         if cutoff_occurred:
             return True
-
-
-
-

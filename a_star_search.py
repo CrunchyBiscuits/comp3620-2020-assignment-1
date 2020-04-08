@@ -25,7 +25,9 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
     frontier = PriorityQueue()
     frontier.push(s0, 0.0)
     gn = {s0: 0.0}
-    visited = []
+    # list is used for visited, but it can't work for mazeMultiSearch
+    # visited = []
+    visited = {s0: 0.0}
     answer = {s0: ""}
     goal = s0
     while not frontier.is_empty():
@@ -33,11 +35,11 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
         if problem.goal_test(travel):
             goal = travel
         for successor, action, cost in problem.get_successors(travel):
-            if successor not in visited:
-                visited.append(successor)
-                fn = gn[travel] + heuristic(successor, problem)
+            gn[successor] = gn[travel] + problem.get_cost_of_actions([action])
+            fn = gn[successor] + heuristic(successor, problem)
+            if successor not in visited.keys() or fn < visited[successor]:
+                visited[successor] = fn
                 frontier.push(successor, fn)
                 answer[successor] = answer[travel]+" "+str(action)
-                gn[successor] = fn
 
     return answer[goal].split()
