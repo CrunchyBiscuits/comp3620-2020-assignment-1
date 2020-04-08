@@ -48,13 +48,20 @@ class MinimaxAgent(Agent):
             score -= yb_score
 
         # Give weight to each maze distance of red and black position
-        # The reason why give 0.5 to black_pos is that for reducing the punishment for the same yellow bird
+        # The reason why give 0.5 to black_pos is for reducing the punishment for the same yellow bird
         # I wish the red bird become more positive to struggle for the same yellow bird
         for yellow_bird in yellow_birds:
             # reward
             score += yb_score * (1 / problem.maze_distance(red_pos, yellow_bird))
             # punishment
             score -= yb_score * (0.5 / problem.maze_distance(black_pos, yellow_bird))
+
+            # red_distance = problem.maze_distance(red_pos, yellow_bird)
+            # black_distance = problem.maze_distance(black_pos, yellow_bird)
+            # # reward
+            # score += yb_score * (0.5 * self.depth / red_distance / red_distance)
+            # # punishment
+            # score -= yb_score * (0.5 * self.depth / black_distance / black_distance)
 
         return score
 
