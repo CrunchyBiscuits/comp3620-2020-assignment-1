@@ -34,12 +34,7 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
             break
         for successor, action, cost in problem.get_successors(travel):
             gn[successor] = gn[travel] + problem.get_cost_of_actions([action])
-            if successor not in visited.keys():
-                fn = gn[successor] + heuristic(successor, problem)
-                visited[successor] = gn[successor]
-                frontier.push(successor, fn)
-                answer[successor] = answer[travel]+" "+str(action)
-            elif gn[successor] < visited[successor]:
+            if successor not in visited.keys() or gn[successor] < visited[successor]:
                 fn = gn[successor] + heuristic(successor, problem)
                 visited[successor] = gn[successor]
                 frontier.push(successor, fn)
