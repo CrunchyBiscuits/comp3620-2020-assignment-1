@@ -35,7 +35,6 @@ def solve(problem: SearchProblem) -> List[str]:
 
 def recursive_dls(state, problem: SearchProblem, visited, bound, answer, depth):
     cutoff_occurred = False
-    visited[state] = depth
     if problem.goal_test(state):
         return answer[state].split()
     elif depth == bound:
