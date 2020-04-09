@@ -22,41 +22,35 @@ def solve(problem: SearchProblem) -> List[str]:
 
     # *** YOUR CODE HERE ***
     bound = 0
+    s0 = problem.get_initial_state()
+    answer = {s0: ""}
+    visited = {s0: 0}
+
     while True:
-        result = dls(problem, bound)
+        result = recursive_dls(s0, problem, visited, bound, answer, 0)
         bound += 1
-        if type(result) != bool:
+        if result != "fail" and result != "cutoff":
             return result
 
 
-def dls(problem: SearchProblem, bound):
-    s0 = problem.get_initial_state()
-    frontier = Stack()
-    frontier.push((s0, 0))
-    answer = {s0: ""}
-    visited = {s0: 0}
-    return recursive_dls(problem, frontier, visited, bound, answer)
-
-
-def recursive_dls(problem: SearchProblem, frontier, visited, bound, answer):
+def recursive_dls(state, problem: SearchProblem, visited, bound, answer, depth):
     cutoff_occurred = False
-    if frontier.is_empty():
-        return True
-    state, depth = frontier.pop()
+    visited[state] = depth
     if problem.goal_test(state):
         return answer[state].split()
     elif depth == bound:
-        return True
+        return "cutoff"
     else:
         for successor, action, cost in problem.get_successors(state):
             if successor not in visited.keys() or visited[successor] > depth:
-                frontier.push((successor, depth + 1))
                 answer[successor] = answer[state] + " " + str(action)
                 visited[successor] = depth + 1
-            result = recursive_dls(problem, frontier, visited, bound, answer)
-            if result and type(result) == bool:
-                cutoff_occurred = True
-            else:
-                return result
-        if cutoff_occurred:
-            return True
+                result = recursive_dls(successor, problem, visited, bound, answer, depth+1)
+                if result == "cutoff":
+                    cutoff_occurred = True
+                elif result != "fail":
+                    return result
+    if cutoff_occurred:
+        return "cutoff"
+    else:
+        return "fail"
