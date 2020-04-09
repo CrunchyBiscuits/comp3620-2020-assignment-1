@@ -25,15 +25,13 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
     frontier = PriorityQueue()
     frontier.push(s0, 0.0)
     gn = {s0: 0.0}
-    # list is used for visited, but it can't work for mazeMultiSearch
-    # visited = []
     visited = {s0: 0.0}
     answer = {s0: ""}
-    goal = s0
-    while not frontier.is_empty():
+    while True:
         travel = frontier.pop()
         if problem.goal_test(travel):
             goal = travel
+            break
         for successor, action, cost in problem.get_successors(travel):
             gn[successor] = gn[travel] + problem.get_cost_of_actions([action])
             fn = gn[successor] + heuristic(successor, problem)
