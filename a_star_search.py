@@ -33,7 +33,7 @@ def solve(problem: SearchProblem, heuristic: Callable) -> List[str]:
             goal = travel
             break
         for successor, action, cost in problem.get_successors(travel):
-            gn[successor] = gn[travel] + problem.get_cost_of_actions([action])
+            gn[successor] = problem.get_cost_of_actions(answer[travel].split()) + problem.get_cost_of_actions([action])
             if successor not in visited.keys() or gn[successor] < visited[successor]:
                 fn = gn[successor] + heuristic(successor, problem)
                 visited[successor] = gn[successor]
