@@ -42,26 +42,34 @@ class MinimaxAgent(Agent):
         player, red_pos, black_pos, yellow_birds, score, yb_score = state
 
         # *** YOUR CODE GOES HERE ***
-        # calculate the maze distance of red_pos and black_pos
+        """ calculate the maze distance of red_pos and black_pos """
         red_black_distance = problem.maze_distance(red_pos, black_pos)
         if red_black_distance == 0:
             score -= yb_score
 
-        # Give weight to each maze distance of red and black position
-        # The reason why give 0.5 to black_pos is for reducing the punishment for the same yellow bird
-        # I wish the red bird become more positive to struggle for the same yellow bird
+        """ Give weight to each maze distance of red and black position
+            The reason why give 0.5 to black_pos is for reducing the punishment for the same yellow bird
+            I wish the red bird become more positive to struggle for the same yellow bird 
+            I set the coefficient to 0.3, 0.4, 0.45 and 0.6, 0.5 get the best result with 
+            the depth given by notes.
+        """
         for yellow_bird in yellow_birds:
             # reward
             score += yb_score * (1 / problem.maze_distance(red_pos, yellow_bird))
             # punishment
             score -= yb_score * (0.5 / problem.maze_distance(black_pos, yellow_bird))
 
+            """ take the depth into consideration is another method but I prefer the first one
+                the below eval_function can get a better performance in anuAdversarial 
+                set the coefficient to 0.5 is that min and max method take one step each time
+                so the bird may get a yellow one in depth/2 steps.
+            """
             # red_distance = problem.maze_distance(red_pos, yellow_bird)
             # black_distance = problem.maze_distance(black_pos, yellow_bird)
             # # reward
-            # score += yb_score * (0.5 * self.depth / red_distance / red_distance)
+            # score += yb_score * (0.5 * (self.depth / red_distance))
             # # punishment
-            # score -= yb_score * (0.5 * self.depth / black_distance / black_distance)
+            # score -= yb_score * (0.5 * (self.depth / black_distance))
 
         return score
 
@@ -73,15 +81,21 @@ class MinimaxAgent(Agent):
         """
 
         # *** YOUR CODE GOES HERE ***
+
         if problem.terminal_test(state) or current_depth == self.depth:
             return self.evaluation(problem, state), Directions.STOP
+
+        """ follow the pseudo code from slides"""
         max_utility = float('-inf')
         max_action = None
+
+        """ iterate style from implementation_notes.md """
         for next_state, action, _ in problem.get_successors(state):
             temp_utility = self.minimize(problem, next_state, current_depth + 1, alpha, beta)
             if max_utility < temp_utility:
                 max_utility = temp_utility
                 max_action = action
+                """ update α here"""
                 alpha = max_utility
 
             if beta <= alpha:
@@ -99,8 +113,11 @@ class MinimaxAgent(Agent):
         if problem.terminal_test(state) or current_depth == self.depth:
             return self.evaluation(problem, state)
         min_utility = float('inf')
+
+        """ iterate style from implementation_notes.md """
         for next_state, action, _ in problem.get_successors(state):
             min_utility = min(min_utility, self.maximize(problem, next_state, current_depth + 1, alpha, beta)[0])
+            """ update β here"""
             beta = min_utility
 
             if beta <= alpha:

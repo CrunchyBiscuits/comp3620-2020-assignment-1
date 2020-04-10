@@ -33,6 +33,7 @@ def solve(problem: SearchProblem) -> List[str]:
     while flag:
         travel = q.pop()
         for successor, action, cost in problem.get_successors(travel):
+            # early exit of the loop
             if problem.goal_test(successor):
                 visited.append(successor)
                 flag = False

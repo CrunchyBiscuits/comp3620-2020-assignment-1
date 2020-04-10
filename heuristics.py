@@ -80,7 +80,11 @@ def every_bird_heuristic(state: State,
     heuristic_value = 0
 
     """ *** YOUR CODE HERE *** """
+
     # MST
+    """ Create the minimal spanning tree of all the yellow birds 
+        and current position.
+    """
     distance = 1000
     current_bird = None
     temp_birds = []
@@ -91,12 +95,14 @@ def every_bird_heuristic(state: State,
                 distance = problem.maze_distance(position, bird)
                 current_bird = bird
     else:
+        # if there is no bird then h value is 0
         return heuristic_value
 
     heuristic_value += distance
     temp_birds.remove(current_bird)
 
     while temp_birds:
+        """ Using Prim algorithm to find the MST """
         distance = 1000
         temp = None
         for bird in temp_birds:
