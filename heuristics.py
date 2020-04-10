@@ -15,7 +15,6 @@
 """
 
 from typing import Tuple
-from frontiers import Stack
 from search_problems import (MultiplePositionSearchProblem,
                              PositionSearchProblem)
 
@@ -81,11 +80,6 @@ def every_bird_heuristic(state: State,
     heuristic_value = 0
 
     """ *** YOUR CODE HERE *** """
-    # if yellow_birds:
-    #     heuristic_value += problem.maze_distance(position, yellow_birds[0])
-    #     for i in range(len(yellow_birds) - 1):
-    #         heuristic_value += problem.maze_distance(yellow_birds[i], yellow_birds[i+1])
-
     # MST
     distance = 1000
     current_bird = None
