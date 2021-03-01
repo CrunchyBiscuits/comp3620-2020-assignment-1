@@ -1,4 +1,4 @@
-# COMP3620/6320 Assignment 1: Search
+# COMP3620/6320: Search
 
 This is the GitLab repository for COMP3620/6320 Assignment 1. To get started:
 
